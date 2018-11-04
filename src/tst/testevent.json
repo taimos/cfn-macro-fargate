@@ -1,0 +1,68 @@
+{
+  "region": "eu-central-1",
+  "accountId": "292004443359",
+  "fragment": {
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Description": "Deploy a service on AWS Fargate",
+    "Parameters": {
+      "Count": {
+        "Type": "String",
+        "Description": "The number of instances"
+      }
+    },
+    "Resources": {
+      "TestService": {
+        "Type": "Taimos::FargateService",
+        "Properties": {
+          "BaseStack": "Fargate-External",
+          "Name": "TestService",
+          "Image": "nginx:latest",
+          "Port": 80,
+          "Size": {
+            "Cpu": 256,
+            "Memory": 512,
+            "Count": {
+              "Ref": "Count"
+            }
+          },
+          "Subdomain": "test",
+          "HealthCheck": {
+            "Path": "/",
+            "Status": "401"
+          },
+          "Policies": [
+            {
+              "PolicyName": "test-service",
+              "PolicyDocument": {
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Action": [
+                      "s3:PutObject"
+                    ],
+                    "Resource": "*"
+                  }
+                ]
+              }
+            }
+          ],
+          "Environment": {
+            "FOO": "bar"
+          }
+        }
+      },
+      "LogGroup2": {
+        "Type": "AWS::Logs::LogGroup",
+        "Properties": {
+          "RetentionInDays": 7
+        }
+      }
+    }
+  },
+  "transformId": "292004443359::Taimos-Fargate",
+  "params": {},
+  "requestId": "e25413b3-9f9c-43dd-894b-148656c25925",
+  "templateParameterValues": {
+    "Count": "2"
+  }
+}

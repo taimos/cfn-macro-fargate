@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Fargate Macro
+Resources:
+  PrioLookupFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: bundle.prioLookupHandler
+      Runtime: nodejs8.10
+      Timeout: 10
+      CodeUri: ./src/dist/bundle.js
+      Policies:
+        Statement:
+          - Effect: "Allow"
+            Action: "elasticloadbalancing:DescribeRules"
+            Resource: '*'
+  Function:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: bundle.macroHandler
+      Runtime: nodejs8.10
+      Timeout: 10
+      CodeUri: ./src/dist/bundle.js
+  Macro:
+    Type: AWS::CloudFormation::Macro
+    Properties:
+      Name: Taimos-Fargate
+      Description: Add a Fargate service custom type
+      FunctionName: !Ref Function
+Outputs:
+  PrioLookupFunction:
+    Description: The ARN of the PrioLookupFunction
+    Value: !GetAtt PrioLookupFunction.Arn
+    Export:
+      Name: FargateMacro-PrioLookupFunction

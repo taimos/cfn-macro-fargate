@@ -17,7 +17,7 @@ You can use on of the example setups for this purpose or create your of template
 
 # Deploy the macro
 
-Running `./deploy.sh` deploys the CFN-Macro and a customer resource function to calculate ALB priorities.
+Running `./deploy.sh` deploys the CFN-Macro and a custom resource function to calculate ALB priorities.
 
 # Use the macro
 

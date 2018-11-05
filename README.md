@@ -11,9 +11,8 @@ You have to deploy a base stack containing the Fargate Cluster with the followin
 * `${AWS::StackName}-Subnets`: Comma separated list of subnets the cluster is deployed in (`!Join [',', [!Ref PublicSubnetOne, !Ref PublicSubnetTwo, !Ref PublicSubnetThree]]`)
 * `${AWS::StackName}-FargateContainerSecurityGroup`: The security group used to allow Fargate containers to receive traffic from ALB (`!Ref FargateContainerSecurityGroup`)
 * `${AWS::StackName}-Domain`: the domain of the application loadbalancer (`example.com`)
-ECSROLE????
 
-You can use on of the example setups for this purpose or create your of template.
+You can use one of the example setups for this purpose or create your of template.
 
 # Deploy the macro
 
@@ -98,6 +97,10 @@ The path to check. Default is `/`
 ### Status 
 
 The expected status code. Default is `null` and uses the ALB defaults. 
+
+### GracePeriod
+
+The grace period of the service to prevent failing health checks on startup to terminate the service. Default is 10 seconds.
 
 ## Policies
 
